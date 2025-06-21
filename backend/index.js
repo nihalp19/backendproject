@@ -2,12 +2,17 @@ import express from "express"
 import dotenv from "dotenv"
 import { sequelize } from "./utils/db.js"
 
+import authRoutes from "./routes/auth.routes.js"
+
 dotenv.config()
 
 const PORT = process.env.PORT || 8080
 const app = express()
 
+
 app.use(express.json())
+
+app.use("/api/auth",authRoutes)
 
 sequelize.authenticate().then(() => {
     console.log("DB CONNECTED")
