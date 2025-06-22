@@ -4,6 +4,8 @@ import { sequelize } from "./utils/db.js"
 import cookieParser from "cookie-parser"
 import authRoutes from "./routes/auth.routes.js"
 import patientsRoutes from "./routes/patients.routes.js"
+import doctorsRoutes from "./routes/doctors.routes.js"
+import mappingRoutes from "./routes/mapping.routes.js"
 
 dotenv.config()
 
@@ -14,10 +16,16 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 
-app.use("/api/auth",authRoutes)
-app.use("/api/patients",patientsRoutes)
+app.use("/api/auth", authRoutes)
+app.use("/api/patients", patientsRoutes)
+app.use("/api/doctors", doctorsRoutes)
+app.use("/api/mappings", mappingRoutes)
 
-sequelize.sync({ alter: true })  // use { force: true } only for development to drop & recreate tables
+app.all("/", async (req, res) => {
+  return res.send("Backend is Running")
+})
+
+sequelize.sync({ alter: true })
   .then(() => {
     console.log('Database synced');
     app.listen(8080, () => {
