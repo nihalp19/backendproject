@@ -2,13 +2,6 @@
 
 A comprehensive healthcare management system built with Node.js, Express.js, and PostgreSQL. This RESTful API provides secure user authentication and complete CRUD operations for managing patients, doctors, and their relationships.
 
-## 🚀 Live Demo
-
-**API is deployed and live on Vercel:** [https://your-healthcare-api.vercel.app](https://your-healthcare-api.vercel.app)
-
-- **Health Check:** [https://your-healthcare-api.vercel.app/health](https://your-healthcare-api.vercel.app/health)
-- **Base URL:** `https://your-healthcare-api.vercel.app/api`
-
 ## 🛠️ Tech Stack
 
 - **Backend**: Node.js, Express.js
@@ -62,11 +55,5 @@ npm start
 ```
 
 The server will start on `http://localhost:8080`
-
-## 📚 API Documentation
-
-### Base URL
-- **Local**: `http://localhost:8080/api`
-- **Production**: `https://your-healthcare-api.vercel.app/api`
 
 
