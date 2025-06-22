@@ -55,11 +55,6 @@ export const getAllDoctors = async (req, res) => {
 
     try {
         const doctors = await Doctor.findAll({})
-
-        if (!doctors) {
-            return res.status(400).json({ message: "doctors not found" })
-        }
-
         return res.status(200).json({ message: "Doctors Fetched Successfully", doctors })
     } catch (error) {
         console.log("error while fetching doctors", error.message)
@@ -80,7 +75,7 @@ export const getDoctor = async (req, res) => {
 
         const doctor = await Doctor.findByPk(id)
         if (!doctor) {
-            return res.status(400).json({ message: "Doctor Not Found" })
+            return res.status(404).json({ message: "Doctor Not Found" })
         }
 
         return res.status(200).json({ message: "Doctor Found Successfully", doctor })
@@ -114,7 +109,7 @@ export const updateDoctorDetails = async (req, res) => {
         const doctor = await Doctor.findByPk(id)
 
         if (!doctor) {
-            return res.status(400).json({ message: "Doctor not found" })
+            return res.status(404).json({ message: "Doctor not found" })
         }
 
         await doctor.update(parsed.data)
@@ -137,7 +132,7 @@ export const deleteDoctor = async(req,res) => {
 
         const doctor = await Doctor.findByPk(id)
         if(!doctor){
-            return res.status(400).json({message : "Doctor Not found"})
+            return res.status(404).json({message : "Doctor Not found"})
         }
 
         await doctor.destroy()
