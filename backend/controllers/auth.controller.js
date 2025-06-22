@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
+import { generateToken } from "../utils/generateToken.js";
 
 const RegisterSchema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -32,9 +33,10 @@ export const register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await User.create({ name, email, password: hashedPassword });
+        const newUser =  await User.create({ name, email, password: hashedPassword });
 
-        return res.status(201).json({ message: "User registered successfully" });
+        const { password: _, ...userWithoutPassword } = newUser.get({ plain: true });
+        return res.status(201).json({ message: "User registered successfully", user: userWithoutPassword });
 
     } catch (error) {
         console.error("Error during registration:", error);
@@ -78,14 +80,16 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: "Invalid Credentials" })
         }
 
-        const accessToken = generatToken(user.id)
+        const accessToken = generateToken(user.id)
 
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production", // Optional
             sameSite: "lax",
         });
-        res.status(200).json({ message: "Login successfull" })
+
+        const { password: _, ...userWithoutPassword } = user.get({ plain: true });
+        res.status(200).json({ message: "Login successful", user: userWithoutPassword });
     } catch (error) {
         console.log("error while login", error.message)
         return res.status(500).json({ message: "Internal Server Error", error: error.message })
